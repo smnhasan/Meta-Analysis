@@ -1,0 +1,43 @@
+ssc install metan
+clear
+set obs 8
+gen CFR=0
+gen UCI=0
+gen LCI=0
+edit
+
+replace CFR = 0.25 in 1/1
+#replace CFR = 0.20 in 2/2
+replace CFR = 2.15 in 2/2
+replace CFR = 1.70 in 3/3
+replace CFR = 0.80 in 4/4
+replace CFR = 1.70 in 5/5
+replace CFR = 4.00 in 6/6
+replace CFR = 2.10 in 7/7
+replace CFR = 1.00 in 8/8
+
+replace UCI = 1.25 in 1/1
+#replace UCI = 2.70 in 2/2
+replace UCI = 6.60 in 2/2
+replace UCI = 3.18 in 3/3
+replace UCI = 9.40 in 4/4
+replace UCI = 5.20 in 5/5
+replace UCI = 5.25 in 6/6
+replace UCI = 2.45 in 7/7
+replace UCI = 1.1 in 8/8
+
+replace LCI = 0.20 in 1/1
+#replace LCI = 0.50 in 2/2
+replace LCI = 1.40 in 2/2
+replace LCI = 1.24 in 3/3
+replace LCI = 0.57 in 4/4
+replace LCI = 1.04 in 5/5
+replace LCI = 2.17 in 6/6
+replace LCI = 1.44 in 7/7
+replace LCI = 0.24 in 8/8
+edit
+
+gen lnCFR = ln(CFR)
+gen lnLCI = ln(LCI)
+gen lnUCI = ln(UCI)
+metan lnCFR lnLCI lnUCI, eform effect(CFR)

@@ -1,0 +1,159 @@
+
+https://stats.oarc.ucla.edu/stata/seminars/introduction-to-meta-analysis-in-stata/
+
+clear
+import excel "E:\ResearchProject\Najmul Bhai\Meta Analysis\example_data.xlsx", sheet("Sheet1") firstrow
+
+meta esize tn tmean tsd cn cmean csd, esize(hedgesg) random studylabel(author)
+
+meta summarize, random
+
+meta forestplot
+
+meta galbraithplot
+
+meta forestplot, leaveoneout
+
+meta summarize, common
+
+meta summarize, fixed
+
+meta summarize, random
+
+meta summarize, random(reml) nometashow
+
+meta summarize, random(mle) nometashow
+
+meta summarize, random(ebayes) nometashow
+
+meta summarize, random(dlaird) nometashow
+
+meta summarize, random(sjonkman) nometashow
+
+meta summarize, random(hedges) nometashow
+
+meta summarize, random(hschmidt) nometashow
+
+meta funnelplot, random
+
+meta funnelplot, random contours(1 5 10)
+
+meta bias, begg
+
+meta bias, egger
+
+meta trimfill, random
+
+meta summarize, random cumulative(date)
+
+meta forestplot, random cumulative(date)
+
+
+
+https://www.stata.com/stata-news/news34-5/forest-plots/#references
+
+clear
+import excel "E:\ResearchProject\Najmul Bhai\Meta Analysis\example_data2.xlsx", sheet("Sheet1") firstrow
+
+meta esize npost nnegt nposc nnegc, esize(lnrratio) studylabel(author)
+ 
+meta forestplot
+
+meta forestplot, esrefline nullrefline insidemarker
+
+meta forestplot, nullrefline(favorsleft("Favors vaccine", color(green)) favorsright("Favors control"))
+
+meta forestplot, predinterval
+
+meta forestplot _id _plot _esci latitude, columnopts(latitude, title("Absolute latitude")) sort(latitude)
+
+meta summarize, random(dlaird) nostudies
+
+meta summarize, common(iv) nostudies
+
+meta forestplot, customoverall(-0.714 -1.064 -0.364, label("{bf:Random-DL model}")) customoverall(-0.430 -0.510 -0.351, label("{bf:Common-IV model}"))
+
+
+https://www.stata.com/features/overview/meta-analysis/
+
+use https://www.stata-press.com/data/r18/pupiliq
+
+export excel study author year nexper ncontrol stdmdiff weeks catweek week1 se se_c setting tester studylbl using "E:\ResearchProject\Najmul Bhai\Meta Analysis\example_data3.xls", firstrow(variables) nolabel replace
+
+webuse pupiliq
+
+describe studylbl stdmdiff se week1
+
+meta set stdmdiff se, studylabel(studylbl) eslabel(Std. Mean Diff.)
+
+meta summarize
+
+meta forestplot
+
+meta forestplot, subgroup(week1)
+
+meta regress weeks
+
+estat bubbleplot
+
+meta funnelplot
+
+meta funnelplot, contours(1 5 10)
+
+meta funnelplot, by(week1)
+
+meta bias, egger
+
+meta bias week1, egger
+
+meta trimfill, funnel
+
+meta forestplot, cumulative(weeks)
+
+
+
+Example 4
+
+ssc install metan
+clear
+set obs 8
+gen or=0
+gen uci=0
+gen lci=0
+edit
+
+replace or = 0.25 in 1/1
+#replace or = 0.20 in 2/2
+replace or = 2.15 in 2/2
+replace or = 1.70 in 3/3
+replace or = 0.80 in 4/4
+replace or = 1.70 in 5/5
+replace or = 4.00 in 6/6
+replace or = 2.10 in 7/7
+replace or = 1.00 in 8/8
+
+replace uci = 1.25 in 1/1
+#replace uci = 2.70 in 2/2
+replace uci = 6.60 in 2/2
+replace uci = 3.18 in 3/3
+replace uci = 9.40 in 4/4
+replace uci = 5.20 in 5/5
+replace uci = 5.25 in 6/6
+replace uci = 2.45 in 7/7
+replace uci = 1.1 in 8/8
+
+replace lci = 0.20 in 1/1
+#replace lci = 0.50 in 2/2
+replace lci = 1.40 in 2/2
+replace lci = 1.24 in 3/3
+replace lci = 0.57 in 4/4
+replace lci = 1.04 in 5/5
+replace lci = 2.17 in 6/6
+replace lci = 1.44 in 7/7
+replace lci = 0.24 in 8/8
+edit
+
+gen lnor = ln(or)
+gen lnlci = ln(lci)
+gen lnuci = ln(uci)
+metan lnor lnlci lnuci, eform effect(or)
