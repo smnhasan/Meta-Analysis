@@ -157,3 +157,7 @@ gen lnor = ln(or)
 gen lnlci = ln(lci)
 gen lnuci = ln(uci)
 metan lnor lnlci lnuci, eform effect(or)
+
+
+
+metafunnel _ES _seES, eform xtitle("Odds ratio (log scale)")

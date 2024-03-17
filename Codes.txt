@@ -1,43 +1,86 @@
 ssc install metan
 clear
-set obs 8
+set obs 22
 gen CFR=0
 gen UCI=0
 gen LCI=0
 edit
 
 replace CFR = 0.25 in 1/1
-#replace CFR = 0.20 in 2/2
-replace CFR = 2.15 in 2/2
-replace CFR = 1.70 in 3/3
-replace CFR = 0.80 in 4/4
-replace CFR = 1.70 in 5/5
-replace CFR = 4.00 in 6/6
-replace CFR = 2.10 in 7/7
-replace CFR = 1.00 in 8/8
+replace CFR = 0.20 in 2/2
+replace CFR = 2.15 in 3/3
+replace CFR = 1.70 in 4/4
+replace CFR = 0.80 in 5/5
+replace CFR = 0.90 in 6/6
+replace CFR = 2.60 in 7/7
+replace CFR = 1.80 in 8/8
+replace CFR = 1.90 in 9/9
+replace CFR = 1.70 in 10/10
+replace CFR = 0.70 in 11/11
+replace CFR = 2.70 in 12/12
+replace CFR = 4.00 in 13/13
+replace CFR = 2.10 in 14/14
+replace CFR = 3.60 in 15/15
+replace CFR = 3.20 in 16/16
+replace CFR = 4.70 in 17/17
+replace CFR = 5.40 in 18/18
+replace CFR = 0.60 in 19/19
+replace CFR = 4.10 in 20/20
+replace CFR = 1.00 in 21/21
+replace CFR = 2.00 in 22/22
 
 replace UCI = 1.25 in 1/1
-#replace UCI = 2.70 in 2/2
-replace UCI = 6.60 in 2/2
-replace UCI = 3.18 in 3/3
-replace UCI = 9.40 in 4/4
-replace UCI = 5.20 in 5/5
-replace UCI = 5.25 in 6/6
-replace UCI = 2.45 in 7/7
-replace UCI = 1.1 in 8/8
+replace UCI = 0.30 in 2/2
+replace UCI = 6.60 in 3/3
+replace UCI = 3.18 in 4/4
+replace UCI = 9.40 in 5/5
+replace UCI = 3.20 in 6/6
+replace UCI = 3.90 in 7/7
+replace UCI = 3.90 in 8/8
+replace UCI = 2.37 in 9/9
+replace UCI = 5.20 in 10/10
+replace UCI = 0.83 in 11/11
+replace UCI = 4.00 in 12/12
+replace UCI = 5.25 in 13/13
+replace UCI = 2.45 in 14/14
+replace UCI = 5.20 in 15/15
+replace UCI = 6.90 in 16/16
+replace UCI = 5.35 in 17/17
+replace UCI = 6.70 in 18/18
+replace UCI = 0.70 in 19/19
+replace UCI = 6.00 in 20/20
+replace UCI = 1.10 in 21/21
+replace UCI = 2.40 in 22/22
 
 replace LCI = 0.20 in 1/1
-#replace LCI = 0.50 in 2/2
-replace LCI = 1.40 in 2/2
-replace LCI = 1.24 in 3/3
-replace LCI = 0.57 in 4/4
-replace LCI = 1.04 in 5/5
-replace LCI = 2.17 in 6/6
-replace LCI = 1.44 in 7/7
-replace LCI = 0.24 in 8/8
+replace LCI = 0.10 in 2/2
+replace LCI = 1.40 in 3/3
+replace LCI = 1.24 in 4/4
+replace LCI = 0.57 in 5/5
+replace LCI = 0.10 in 6/6
+replace LCI = 1.50 in 7/7
+replace LCI = 0.70 in 8/8
+replace LCI = 1.50 in 9/9
+replace LCI = 1.04 in 10/10
+replace LCI = 0.58 in 11/11
+replace LCI = 1.70 in 12/12
+replace LCI = 2.17 in 13/13
+replace LCI = 1.44 in 14/14
+replace LCI = 2.40 in 15/15
+replace LCI = 1.20 in 16/16
+replace LCI = 4.13 in 17/17
+replace LCI = 4.30 in 18/18
+replace LCI = 0.50 in 19/19
+replace LCI = 2.8 in 20/20
+replace LCI = 0.24 in 21/21
+replace LCI = 1.80 in 22/22
 edit
 
 gen lnCFR = ln(CFR)
 gen lnLCI = ln(LCI)
 gen lnUCI = ln(UCI)
-metan lnCFR lnLCI lnUCI, eform effect(CFR)
+metan lnCFR lnLCI lnUCI, eform effect(CFR) title ("{bf:Forest Plot of Respiratory Syncytial Virus CFR}", size(small)) texts(100)
+
+ssc install metafunnel
+metafunnel _ES _seES, eform xtitle("CFR (log scale)") ytitle("Standard Error")
+
